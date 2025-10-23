@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "busId": "B001",
+    "model": "Mercedes-Benz Sprinter",
+    "capacity": 20,
+    "year": 2021,
+    "licensePlate": "AA1234BB",
+    "mileage": 50000
+  },
+  {
+    "busId": "B002",
+    "model": "Volvo 9700",
+    "capacity": 45,
+    "year": 2020,
+    "licensePlate": "BB5678CC",
+    "mileage": 75000
+  }
+]

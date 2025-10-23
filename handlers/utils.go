@@ -6,14 +6,14 @@ import (
 	"strings"
 )
 
-// respondJSON відправляє JSON відповідь
+// відправляю JSON відповідь
 func respondJSON(w http.ResponseWriter, status int, payload interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	json.NewEncoder(w).Encode(payload)
 }
 
-// respondError відправляє помилку у форматі JSON
+// відправляю помилку у форматі JSON
 func respondError(w http.ResponseWriter, status int, message string) {
 	respondJSON(w, status, map[string]string{"error": message})
 }
