@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "personalInfo": {
+      "firstName": "Іван",
+      "lastName": "Петренко",
+      "age": 36,
+      "phone": "+380501234567"
+    },
+    "employeeData": {
+      "position": "Старший водій",
+      "salary": 18000,
+      "hireDate": "2020-05-15",
+      "department": "Транспорт"
+    },
+    "employeeId": "E001"
+  },
+  {
+    "personalInfo": {
+      "firstName": "Марія",
+      "lastName": "Коваленко",
+      "age": 28,
+      "phone": "+380507654321"
+    },
+    "employeeData": {
+      "position": "Водій",
+      "salary": 14000,
+      "hireDate": "2021-03-20",
+      "department": "Транспорт"
+    },
+    "employeeId": "E002"
+  }
+]

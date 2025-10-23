@@ -1,1 +1,64 @@
-[]
+[
+  {
+    "routeId": "R001",
+    "routeNumber": "15A",
+    "startPoint": "Центральний вокзал",
+    "endPoint": "Аеропорт",
+    "distance": 25.5,
+    "duration": 1.5,
+    "busAssigned": {
+      "busId": "B001",
+      "model": "Mercedes-Benz Sprinter",
+      "capacity": 20,
+      "year": 2021,
+      "licensePlate": "AA1234BB",
+      "mileage": 50000
+    },
+    "driver": {
+      "personalInfo": {
+        "firstName": "Іван",
+        "lastName": "Петренко",
+        "age": 35,
+        "phone": "+380501234567"
+      },
+      "employeeData": {
+        "position": "Водій",
+        "salary": 15000,
+        "hireDate": "2020-05-15",
+        "department": "Транспорт"
+      },
+      "employeeId": "E001"
+    }
+  },
+  {
+    "routeId": "R002",
+    "routeNumber": "22B",
+    "startPoint": "Площа Ринок",
+    "endPoint": "Промислова зона",
+    "distance": 18.3,
+    "duration": 1.2,
+    "busAssigned": {
+      "busId": "B002",
+      "model": "Volvo 9700",
+      "capacity": 45,
+      "year": 2020,
+      "licensePlate": "BB5678CC",
+      "mileage": 75000
+    },
+    "driver": {
+      "personalInfo": {
+        "firstName": "Марія",
+        "lastName": "Коваленко",
+        "age": 28,
+        "phone": "+380507654321"
+      },
+      "employeeData": {
+        "position": "Водій",
+        "salary": 14000,
+        "hireDate": "2021-03-20",
+        "department": "Транспорт"
+      },
+      "employeeId": "E002"
+    }
+  }
+]
