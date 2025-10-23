@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"bus-enterprise-api/models"
-	"bus-enterprise-api/storage"
+	"lab5/models"
+	"lab5/storage"
 	"encoding/json"
 	"net/http"
 )
@@ -76,7 +76,6 @@ func (h *RouteHandler) createRoute(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Перевірка чи існують пов'язані сутності
 	if route.BusAssigned != nil {
 		if _, exists := h.storage.GetBus(route.BusAssigned.BusID); !exists {
 			respondError(w, http.StatusBadRequest, "Assigned bus does not exist")
@@ -116,7 +115,6 @@ func (h *RouteHandler) updateRoute(w http.ResponseWriter, r *http.Request, id st
 		return
 	}
 
-	// Перевірка чи існують пов'язані сутності
 	if route.BusAssigned != nil {
 		if _, exists := h.storage.GetBus(route.BusAssigned.BusID); !exists {
 			respondError(w, http.StatusBadRequest, "Assigned bus does not exist")

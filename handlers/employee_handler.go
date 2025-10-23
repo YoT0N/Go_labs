@@ -1,11 +1,10 @@
 package handlers
 
 import (
-	"bus-enterprise-api/models"
-	"bus-enterprise-api/storage"
+	"lab5/models"
+	"lab5/storage"
 	"encoding/json"
 	"net/http"
-	"strings"
 )
 
 type EmployeeHandler struct {
@@ -72,7 +71,6 @@ func (h *EmployeeHandler) createEmployee(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	// Перевірка чи існує вже працівник з таким ID
 	if _, exists := h.storage.GetEmployee(employee.EmployeeID); exists {
 		respondError(w, http.StatusConflict, "Employee with this ID already exists")
 		return
@@ -87,7 +85,6 @@ func (h *EmployeeHandler) createEmployee(w http.ResponseWriter, r *http.Request)
 }
 
 func (h *EmployeeHandler) updateEmployee(w http.ResponseWriter, r *http.Request, id string) {
-	// Перевірка чи існує працівник
 	if _, exists := h.storage.GetEmployee(id); !exists {
 		respondError(w, http.StatusNotFound, "Employee not found")
 		return
@@ -99,7 +96,6 @@ func (h *EmployeeHandler) updateEmployee(w http.ResponseWriter, r *http.Request,
 		return
 	}
 
-	// Перевірка що ID в тілі запиту співпадає з ID в URL
 	if employee.EmployeeID != id {
 		respondError(w, http.StatusBadRequest, "EmployeeID in body does not match URL ID")
 		return
@@ -114,7 +110,6 @@ func (h *EmployeeHandler) updateEmployee(w http.ResponseWriter, r *http.Request,
 }
 
 func (h *EmployeeHandler) deleteEmployee(w http.ResponseWriter, r *http.Request, id string) {
-	// Перевірка чи існує працівник
 	if _, exists := h.storage.GetEmployee(id); !exists {
 		respondError(w, http.StatusNotFound, "Employee not found")
 		return

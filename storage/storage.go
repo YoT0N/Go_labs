@@ -2,7 +2,7 @@ package storage
 
 import (
 	"encoding/json"
-	"lab5/models/"
+	"lab5/models"
 	"os"
 	"sync"
 )
@@ -22,12 +22,11 @@ func NewStorage() *Storage {
 	}
 }
 
-// Загальні методи для роботи з JSON
 func (s *Storage) loadFromFile(filename string, target interface{}) error {
 	file, err := os.Open(filename)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return nil // Файл не існує - це нормально для першого запуску
+			return nil
 		}
 		return err
 	}
@@ -55,7 +54,7 @@ func (s *Storage) LoadEmployees() error {
 	defer s.mutex.Unlock()
 
 	var employees []models.Employee
-	err := s.loadFromFile("data/employees.json", &employees)
+	err := s.loadFromFile("storage/employees.json", &employees)
 	if err != nil {
 		return err
 	}
@@ -75,68 +74,9 @@ func (s *Storage) SaveEmployees() error {
 		employees = append(employees, employee)
 	}
 
-	return s.saveToFile("data/employees.json", employees)
+	return s.saveToFile("storage/employees.json", employees)
 }
 
-// Методи для автобусів
-func (s *Storage) LoadBuses() error {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	var buses []models.Bus
-	err := s.loadFromFile("data/buses.json", &buses)
-	if err != nil {
-		return err
-	}
-
-	for _, bus := range buses {
-		s.buses[bus.BusID] = bus
-	}
-	return nil
-}
-
-func (s *Storage) SaveBuses() error {
-	s.mutex.RLock()
-	defer s.mutex.RUnlock()
-
-	var buses []models.Bus
-	for _, bus := range s.buses {
-		buses = append(buses, bus)
-	}
-
-	return s.saveToFile("data/buses.json", buses)
-}
-
-// Методи для маршрутів
-func (s *Storage) LoadRoutes() error {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	var routes []models.Route
-	err := s.loadFromFile("data/routes.json", &routes)
-	if err != nil {
-		return err
-	}
-
-	for _, route := range routes {
-		s.routes[route.RouteID] = route
-	}
-	return nil
-}
-
-func (s *Storage) SaveRoutes() error {
-	s.mutex.RLock()
-	defer s.mutex.RUnlock()
-
-	var routes []models.Route
-	for _, route := range s.routes {
-		routes = append(routes, route)
-	}
-
-	return s.saveToFile("data/routes.json", routes)
-}
-
-// CRUD операції для працівників
 func (s *Storage) CreateEmployee(employee models.Employee) error {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
@@ -180,7 +120,35 @@ func (s *Storage) DeleteEmployee(id string) error {
 	return s.SaveEmployees()
 }
 
-// CRUD операції для автобусів
+// Методи для автобусів
+func (s *Storage) LoadBuses() error {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	var buses []models.Bus
+	err := s.loadFromFile("storage/buses.json", &buses)
+	if err != nil {
+		return err
+	}
+
+	for _, bus := range buses {
+		s.buses[bus.BusID] = bus
+	}
+	return nil
+}
+
+func (s *Storage) SaveBuses() error {
+	s.mutex.RLock()
+	defer s.mutex.RUnlock()
+
+	var buses []models.Bus
+	for _, bus := range s.buses {
+		buses = append(buses, bus)
+	}
+
+	return s.saveToFile("storage/buses.json", buses)
+}
+
 func (s *Storage) CreateBus(bus models.Bus) error {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
@@ -224,7 +192,35 @@ func (s *Storage) DeleteBus(id string) error {
 	return s.SaveBuses()
 }
 
-// CRUD операції для маршрутів
+// Методи для маршрутів
+func (s *Storage) LoadRoutes() error {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	var routes []models.Route
+	err := s.loadFromFile("storage/routes.json", &routes)
+	if err != nil {
+		return err
+	}
+
+	for _, route := range routes {
+		s.routes[route.RouteID] = route
+	}
+	return nil
+}
+
+func (s *Storage) SaveRoutes() error {
+	s.mutex.RLock()
+	defer s.mutex.RUnlock()
+
+	var routes []models.Route
+	for _, route := range s.routes {
+		routes = append(routes, route)
+	}
+
+	return s.saveToFile("storage/routes.json", routes)
+}
+
 func (s *Storage) CreateRoute(route models.Route) error {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
