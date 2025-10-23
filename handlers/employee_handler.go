@@ -1,10 +1,12 @@
 package handlers
 
 import (
+	"encoding/json"
 	"lab5/models"
 	"lab5/storage"
-	"encoding/json"
 	"net/http"
+	"strconv"
+	"strings"
 )
 
 type EmployeeHandler struct {
@@ -47,7 +49,85 @@ func (h *EmployeeHandler) HandleEmployee(w http.ResponseWriter, r *http.Request)
 
 func (h *EmployeeHandler) getEmployees(w http.ResponseWriter, r *http.Request) {
 	employees := h.storage.GetAllEmployees()
-	respondJSON(w, http.StatusOK, employees)
+
+	// Отримуємо параметри фільтрації з query string
+	query := r.URL.Query()
+
+	// Фільтруємо результати
+	filtered := make([]models.Employee, 0)
+	for _, emp := range employees {
+		match := true
+
+		// Фільтр по firstName (часткове співпадіння, регістронезалежне)
+		if firstName := query.Get("firstName"); firstName != "" {
+			if !strings.Contains(strings.ToLower(emp.PersonalInfo.FirstName), strings.ToLower(firstName)) {
+				match = false
+			}
+		}
+
+		// Фільтр по lastName (часткове співпадіння, регістронезалежне)
+		if lastName := query.Get("lastName"); lastName != "" {
+			if !strings.Contains(strings.ToLower(emp.PersonalInfo.LastName), strings.ToLower(lastName)) {
+				match = false
+			}
+		}
+
+		// Фільтр по position (часткове співпадіння, регістронезалежне)
+		if position := query.Get("position"); position != "" {
+			if !strings.Contains(strings.ToLower(emp.EmployeeData.Position), strings.ToLower(position)) {
+				match = false
+			}
+		}
+
+		// Фільтр по department (часткове співпадіння, регістронезалежне)
+		if department := query.Get("department"); department != "" {
+			if !strings.Contains(strings.ToLower(emp.EmployeeData.Department), strings.ToLower(department)) {
+				match = false
+			}
+		}
+
+		// Фільтр по мінімальному віку
+		if minAge := query.Get("minAge"); minAge != "" {
+			if age, err := strconv.Atoi(minAge); err == nil {
+				if emp.PersonalInfo.Age < age {
+					match = false
+				}
+			}
+		}
+
+		// Фільтр по максимальному віку
+		if maxAge := query.Get("maxAge"); maxAge != "" {
+			if age, err := strconv.Atoi(maxAge); err == nil {
+				if emp.PersonalInfo.Age > age {
+					match = false
+				}
+			}
+		}
+
+		// Фільтр по мінімальній зарплаті
+		if minSalary := query.Get("minSalary"); minSalary != "" {
+			if salary, err := strconv.ParseFloat(minSalary, 64); err == nil {
+				if emp.EmployeeData.Salary < salary {
+					match = false
+				}
+			}
+		}
+
+		// Фільтр по максимальній зарплаті
+		if maxSalary := query.Get("maxSalary"); maxSalary != "" {
+			if salary, err := strconv.ParseFloat(maxSalary, 64); err == nil {
+				if emp.EmployeeData.Salary > salary {
+					match = false
+				}
+			}
+		}
+
+		if match {
+			filtered = append(filtered, emp)
+		}
+	}
+
+	respondJSON(w, http.StatusOK, filtered)
 }
 
 func (h *EmployeeHandler) getEmployee(w http.ResponseWriter, r *http.Request, id string) {
